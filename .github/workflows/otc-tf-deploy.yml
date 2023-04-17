@@ -42,7 +42,25 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
-      - name: AWS Backend
+      - name: 'Authenticate to GCP'
+        uses: 'google-github-actions/auth@v0.3.1'
+        with:
+            create_credentials_file: 'true'
+            workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
+            service_account: ${{ secrets.GCP_SA_EMAIL}}
+      - name: Configure AWS Credentials
+        if: ${{ fromJson(steps.get_project.outputs.otc_backend)=='aws' }}
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
+          aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
+      - name: Configure AWS Credentials
+        if: ${{ fromJson(steps.get_project.outputs.otc_backend)=='aws' }}
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
+          aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
+      - name: Deploy Backend
         uses: otc-code/gh-actions/terraform@main
         with:
           TERRAFORM_ACTION: 'create_backend'
