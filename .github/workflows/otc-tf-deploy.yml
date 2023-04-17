@@ -34,9 +34,9 @@ jobs:
          echo "File: $FILE"
 
   deploy:
-    name: Deploy - ${{  github.event.inputs.environment }}
+    name: Deploy - ${{  github.event.inputs.env }}
     needs: project
-    environment: ${{  github.event.inputs.environment }}
+    environment: ${{  github.event.inputs.env }}
     runs-on: [otc-static]
     steps:
       - uses: actions/checkout@v3
