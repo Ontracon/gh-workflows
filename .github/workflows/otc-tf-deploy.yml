@@ -36,9 +36,8 @@ jobs:
          echo "azr_regions=`jq -c '.project.azr_regions' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_regions=`jq -c '.project.gcp_regions' $FILE`" >> "$GITHUB_OUTPUT"
          echo "File: $FILE"
-      -  run: |
-          echo  ${{ steps.get_project.outputs.otc_region }}
       - name: Configure AWS Credentials
+        if: ${{ fromJson(steps.get_project.outputs.otc_backend)=='aws' }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
