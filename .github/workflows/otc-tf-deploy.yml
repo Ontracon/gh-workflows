@@ -34,12 +34,12 @@ jobs:
   #        echo "File: $FILE"
 
   deploy:
-    name: Deploy - ${{  github.event.inputs.env }}
+    name: Deploy - ${{ github.event.inputs.env }}
     #needs: project
-    environment: ${{  github.event.inputs.env }}
+    environment: ${{ github.event.inputs.env }}
     runs-on: [otc-static]
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{  github.event.inputs.env }}
+      - run: echo ${{ github.event.inputs.env }}
