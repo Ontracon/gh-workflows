@@ -35,7 +35,7 @@ jobs:
 
   deploy:
     name: Deploy - ${{  github.event.inputs.env }}
-    needs: project
+    #needs: project
     environment: ${{  github.event.inputs.env }}
     runs-on: [otc-static]
     steps:
