@@ -1,0 +1,120 @@
+on:
+  workflow_call:
+    inputs:
+      deployment:
+        required: false
+        type: string
+        default: 'false'
+    secrets:
+      token:
+        required: false
+
+jobs:
+  tf_docs:
+    name: Update docs
+    runs-on: [Linux]
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update - Docs
+        uses: otc-code/gh-actions/docs@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  tf_base:
+    name: Base check
+    runs-on: [Linux]
+    #if: github.event_name == 'pull_request' 
+    outputs:
+      files: ${{ steps.files.outputs.files }}
+      dirs: ${{ steps.files.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform fmt_check
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'fmt_check'
+
+      - name: Terraform init
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'init'
+          GITHUB_TOKEN: ${{ secrets.token }}
+
+      - name: Terraform validate
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'validate'
+
+      - name: Terraform compliance
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'compliance'
+
+      - name: IaC security (checkov)
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'security'
+
+      - name: IaC security (KICS)
+        uses: checkmarx/kics-github-action@v1.6.3
+        with:
+          path: '${{ github.workspace }}'
+          output_path: '${{ github.workspace }}/.results'
+          ignore_on_exit: results
+          cloud_provider: 'aws, azure, gcp'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Examples
+        if: ${{ inputs.deployment == 'true' }}
+        id: files
+        uses: otc-code/gh-actions/helper@main
+        with:
+          path: '${{ github.workspace }}/examples'
+          ext: 'tfvars'
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: always()
+        with:
+          files: |
+            ${{ github.workspace }}/.results/*.junit.xml.local
+          check_name: 'Terraform Base check'
+          #fail_on: 'errors'
+
+  # tf_deploy_example_tfvars:
+  #   name: Deploy Test (${{ matrix.tfvars }})
+  #   runs-on: [Linux]
+  #   if: ${{ github.event_name == 'pull_request' && inputs.deployment == 'true' }}
+  #   needs: tf_base
+  #   strategy:
+  #     matrix:
+  #       tfvars: ${{ fromJson(needs.tf_base.outputs.files) }}
+  #   steps:
+  #     - name: Output results
+  #       run: |
+  #         echo ${{ matrix.tfvars }}
+  # 
+  # tf_deploy_example_dirs:
+  #   name: Deploy Test (${{ matrix.dir }})
+  #   runs-on: [Linux]
+  #   if: ${{ github.event_name == 'pull_request' && inputs.deployment == 'true' }}
+  #   needs: tf_base
+  #   strategy:
+  #     matrix:
+  #       dir: ${{ fromJson(needs.tf_base.outputs.dirs) }}
+  #   steps:
+  #     - name: Output results
+  #       run: |
+  #         echo ${{ matrix.dir }}
