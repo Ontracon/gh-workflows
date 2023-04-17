@@ -42,6 +42,7 @@ jobs:
 
   tf_security:
     name: Security check
+    needs: tf_base
     runs-on: [Linux]
     steps:
       - name: IaC security (KICS)
