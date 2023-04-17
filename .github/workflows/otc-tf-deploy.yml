@@ -33,20 +33,20 @@ jobs:
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "File: $FILE"
       - name: Configure AWS Credentials
-        if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)=='true' }}
+        if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
       - name: 'Configure GCP Credentials'
-        if: ${{ fromJson(steps.get_project.outputs.gcp_cloud_enabled)=='true' }}
+        if: ${{ fromJson(steps.get_project.outputs.gcp_cloud_enabled)==true }}
         uses: 'google-github-actions/auth@v1.0.0'
         with:
             create_credentials_file: 'true'
             workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
             service_account: ${{ secrets.GCP_SA_EMAIL}}
       - name: 'Configure Azure Credentials'
-        if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)=='true' }}
+        if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
