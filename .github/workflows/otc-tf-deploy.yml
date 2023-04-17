@@ -42,7 +42,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
-          aws-region: ${{ steps.get_project.outputs.otc_region }}
+          aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
       # - name: AWS Backend
       #   uses: otc-code/gh-actions/terraform@main
       #   with:
