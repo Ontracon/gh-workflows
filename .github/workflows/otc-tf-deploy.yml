@@ -42,11 +42,11 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
-      # - name: AWS Backend
-      #   uses: otc-code/gh-actions/terraform@main
-      #   with:
-      #     TERRAFORM_ACTION: 'create_backend'
-      #     TF_DIR: ${{ github.workspace }}
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/env/${{  github.event.inputs.environment }}/aws.${{matrix.cloud_region}}.tfbackend'
-      #     CLOUD_REGION: ${{matrix.cloud_region}}
+      - name: AWS Backend
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TERRAFORM_ACTION: 'create_backend'
+          TF_DIR: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+          CLOUD_REGION: ${{ fromJson(steps.get_project.outputs.otc_region) }}
