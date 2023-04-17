@@ -41,7 +41,7 @@ jobs:
           TERRAFORM_ACTION: 'validate'
 
   tf_security:
-    name: Base check
+    name: Security check
     runs-on: [Linux]
     steps:
       - name: IaC security (KICS)
