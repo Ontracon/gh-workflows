@@ -49,8 +49,9 @@ jobs:
         uses: checkmarx/kics-github-action@v1.6.3
         with:
           path: ${{ github.workspace }}
-          output_path: '${{ github.workspace }}/.results'
           ignore_on_exit: none
+          disable_secrets: true
           fail_on: 'high,medium,low'
+          enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}

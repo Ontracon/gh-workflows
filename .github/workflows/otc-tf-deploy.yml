@@ -9,7 +9,7 @@ jobs:
 
   prepare:
     name: ${{ inputs.environment }}
-    environment: ${{ inputs.environment }}
+    environment: Deployment - ${{ inputs.environment }}
     runs-on: [otc-static]
     steps:
       - uses: actions/checkout@v3
