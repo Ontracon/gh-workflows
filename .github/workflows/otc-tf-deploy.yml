@@ -28,8 +28,7 @@ jobs:
         run: |
          FILE="${{ github.workspace }}/.otc/project.tfvars.json"
          echo "otc_backend=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "otc_region=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "otc_backend=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
+         echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
