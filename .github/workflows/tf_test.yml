@@ -43,6 +43,7 @@ jobs:
   tf_security:
     name: Base check
     runs-on: [Linux]
+    steps:
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
