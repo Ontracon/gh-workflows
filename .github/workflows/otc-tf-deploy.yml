@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      env:
+      environment:
         required: true
         type: string
 
@@ -34,12 +34,12 @@ jobs:
   #        echo "File: $FILE"
 
   deploy:
-    name: Deploy - ${{ github.event.inputs.env }}
+    name: Deploy - ${{ github.event.inputs.environment }}
     #needs: project
-    environment: ${{ github.event.inputs.env }}
+    environment: ${{ github.event.inputs.environment }}
     runs-on: [otc-static]
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{ github.event.inputs.env }}
+      - run: echo ${{ github.event.inputs.environment }}
