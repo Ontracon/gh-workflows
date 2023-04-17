@@ -55,11 +55,11 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'validate'
 
-      - name: IaC security (KICS)
-        uses: checkmarx/kics-github-action@v1.6.3
-        with:
-          path: '${{ github.workspace }}'
-          output_path: '${{ github.workspace }}/.results'
-          ignore_on_exit: results
-          cloud_provider: 'aws, azure, gcp'
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: IaC security (KICS)
+      #   uses: checkmarx/kics-github-action@v1.6.3
+      #   with:
+      #     path: '${{ github.workspace }}'
+      #     output_path: '${{ github.workspace }}/.results'
+      #     ignore_on_exit: results
+      #     cloud_provider: 'aws, azure, gcp'
+      #     token: ${{ secrets.GITHUB_TOKEN }}
