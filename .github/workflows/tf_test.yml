@@ -40,6 +40,9 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'validate'
 
+  tf_security:
+    name: Base check
+    runs-on: [Linux]
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
