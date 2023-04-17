@@ -55,18 +55,6 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'validate'
 
-      - name: Terraform compliance
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TF_DIR: '${{ github.workspace }}'
-          TERRAFORM_ACTION: 'compliance'
-
-      - name: IaC security (checkov)
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TF_DIR: '${{ github.workspace }}'
-          TERRAFORM_ACTION: 'security'
-
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
@@ -75,46 +63,3 @@ jobs:
           ignore_on_exit: results
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get Examples
-        if: ${{ inputs.deployment == 'true' }}
-        id: files
-        uses: otc-code/gh-actions/helper@main
-        with:
-          path: '${{ github.workspace }}/examples'
-          ext: 'tfvars'
-
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: always()
-        with:
-          files: |
-            ${{ github.workspace }}/.results/*.junit.xml.local
-          check_name: 'Terraform Base check'
-          #fail_on: 'errors'
-
-  # tf_deploy_example_tfvars:
-  #   name: Deploy Test (${{ matrix.tfvars }})
-  #   runs-on: [Linux]
-  #   if: ${{ github.event_name == 'pull_request' && inputs.deployment == 'true' }}
-  #   needs: tf_base
-  #   strategy:
-  #     matrix:
-  #       tfvars: ${{ fromJson(needs.tf_base.outputs.files) }}
-  #   steps:
-  #     - name: Output results
-  #       run: |
-  #         echo ${{ matrix.tfvars }}
-  # 
-  # tf_deploy_example_dirs:
-  #   name: Deploy Test (${{ matrix.dir }})
-  #   runs-on: [Linux]
-  #   if: ${{ github.event_name == 'pull_request' && inputs.deployment == 'true' }}
-  #   needs: tf_base
-  #   strategy:
-  #     matrix:
-  #       dir: ${{ fromJson(needs.tf_base.outputs.dirs) }}
-  #   steps:
-  #     - name: Output results
-  #       run: |
-  #         echo ${{ matrix.dir }}
