@@ -73,8 +73,9 @@ jobs:
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+
       - name: Configure AWS Credentials
-        if: ${{ fromJson(steps.get_backend.outputs.aws_cloud_enabled)==true }}
+        if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
