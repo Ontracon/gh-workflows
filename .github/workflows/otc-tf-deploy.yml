@@ -112,3 +112,9 @@ jobs:
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'plan'
+
+      - name: Terraform apply
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ github.workspace }}
+          TERRAFORM_ACTION: 'plan'
