@@ -10,7 +10,7 @@ on:
 jobs:
 
   prepare:
-    name: Backends - ${{ inputs.environment }}
+    name: Backends (${{ inputs.environment }})
     environment: ${{ inputs.environment }}
     runs-on: [otc-static]
     steps:
@@ -58,9 +58,9 @@ jobs:
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
           CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
 
-  TF_plan:
+  TF_deploy:
     needs: prepare
-    name: Plan - ${{ inputs.environment }}
+    name: Deploy (${{ inputs.environment }})
     environment: ${{ inputs.environment }}
     runs-on: [otc-static]
     steps:
