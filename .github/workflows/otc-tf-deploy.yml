@@ -97,3 +97,17 @@ jobs:
             create_credentials_file: 'true'
             workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
             service_account: ${{ secrets.GCP_SA_EMAIL}}
+
+      - name: Terraform init
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ steps.project.outputs.TF_DIR }}
+          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+          TERRAFORM_ACTION: 'init'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform plan
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ github.workspace }}
+          TERRAFORM_ACTION: 'plan'
