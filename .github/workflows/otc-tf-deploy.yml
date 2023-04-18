@@ -102,7 +102,7 @@ jobs:
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
-          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+          #TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
