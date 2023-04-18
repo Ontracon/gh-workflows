@@ -23,10 +23,3 @@ jobs:
         with:
           TF_DIR: '${{ github.workspace }}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Ensure branch auto/otc-changes
-        run: |
-          git push origin "auto/otc-changes"
-        with:
-          TF_DIR: '${{ github.workspace }}'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
