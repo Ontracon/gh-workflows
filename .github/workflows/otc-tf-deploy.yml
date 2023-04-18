@@ -106,6 +106,7 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.token }}
+          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
 
       - name: Terraform plan
         uses: otc-code/gh-actions/terraform@main
