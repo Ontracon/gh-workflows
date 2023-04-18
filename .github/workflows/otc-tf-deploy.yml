@@ -57,6 +57,7 @@ jobs:
           CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
 
   TF_plan:
+    needs: prepare
     name: Plan - ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
     runs-on: [otc-static]
@@ -68,6 +69,7 @@ jobs:
         id: get_project
         run: |
          FILE="${{ github.workspace }}/.otc/project.tfvars.json"
+         echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
