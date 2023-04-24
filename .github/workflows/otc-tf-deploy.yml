@@ -123,6 +123,3 @@ jobs:
       - name: PR automerge
         if: ${{ inputs.environment=='int' }}
         run: gh pr merge
-        with:
-          TF_DIR: ${{ github.workspace }}
-          TERRAFORM_ACTION: 'apply'
