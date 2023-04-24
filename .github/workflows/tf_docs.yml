@@ -26,7 +26,5 @@ jobs:
       - name: Update TF branch
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          git fetch origin
-          git reset origin/main
           git checkout -b "auto/otc-changes"
           git push --force origin "auto/otc-changes"
