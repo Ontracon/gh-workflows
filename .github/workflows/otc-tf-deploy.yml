@@ -122,6 +122,6 @@ jobs:
       
       - name: PR automerge
         if: ${{ inputs.environment=='int' }}
-        run: gh pr merge
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
+        run: |
+          gh auth login --with-token ${{ secrets.ORG_TOKEN }}
+          gh pr merge
