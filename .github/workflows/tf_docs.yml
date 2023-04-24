@@ -24,6 +24,7 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update TF branch
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           git fetch origin
           git reset origin/main
