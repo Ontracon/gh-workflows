@@ -19,6 +19,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update - Docs
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: otc-code/gh-actions/docs@main
         with:
           TF_DIR: '${{ github.workspace }}'
