@@ -123,7 +123,6 @@ jobs:
       - name: PR automerge
         if: ${{ inputs.environment=='int' }}
         run: |
-          git status
           gh pr merge ${{ github.event.issue.number }}
         env: 
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
