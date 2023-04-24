@@ -17,12 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.ORG_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update - Docs
         uses: otc-code/gh-actions/docs@main
         with:
           TF_DIR: '${{ github.workspace }}'
-          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update TF branch
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
