@@ -123,8 +123,6 @@ jobs:
       - name: PR automerge
         if: ${{ inputs.environment=='int' }}
         run: |
-          gh auth login
-          echo "login success"
           gh pr merge
         env: 
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
