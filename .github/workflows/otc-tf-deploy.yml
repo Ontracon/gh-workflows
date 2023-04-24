@@ -124,6 +124,6 @@ jobs:
         if: ${{ inputs.environment=='int' }}
         run: |
           export
-          gh pr merge $GITHUB_HEAD_REF
+          gh pr merge $GITHUB_REF
         env: 
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
