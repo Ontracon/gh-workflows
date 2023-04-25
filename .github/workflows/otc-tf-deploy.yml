@@ -113,6 +113,7 @@ jobs:
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'plan'
+          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
 
       - name: Terraform apply
         uses: otc-code/gh-actions/terraform@main
