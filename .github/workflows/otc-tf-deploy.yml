@@ -119,11 +119,3 @@ jobs:
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'apply'
-      
-      - name: PR automerge
-        if: ${{ inputs.environment=='int' }}
-        run: |
-          export
-          gh pr merge $GITHUB_REF
-        env: 
-          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
