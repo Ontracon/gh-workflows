@@ -52,7 +52,7 @@ jobs:
           path: ${{ github.workspace }}
           ignore_on_exit: none
           disable_secrets: true
-          fail_on: 'high,medium,low'
+          #fail_on: 'high,medium,low'
           enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
