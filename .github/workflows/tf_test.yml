@@ -50,7 +50,7 @@ jobs:
         uses: checkmarx/kics-github-action@v1.6.3
         with:
           path: ${{ github.workspace }}
-          ignore_on_exit: none
+          ignore_on_exit: results
           disable_secrets: true
           #fail_on: 'high,medium,low'
           enable_comments: true
