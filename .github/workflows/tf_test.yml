@@ -41,18 +41,18 @@ jobs:
       #     TF_DIR: '${{ github.workspace }}'
       #     TERRAFORM_ACTION: 'validate'
 
-  # tf_security:
-  #   name: Security check
-  #   needs: tf_base
-  #   runs-on: [Linux]
-  #   steps:
-  #     - name: IaC security (KICS)
-  #       uses: checkmarx/kics-github-action@v1.6.3
-  #       with:
-  #         path: ${{ github.workspace }}
-  #         ignore_on_exit: none
-  #         disable_secrets: true
-  #         fail_on: 'high,medium,low'
-  #         enable_comments: true
-  #         cloud_provider: 'aws, azure, gcp'
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+  tf_security:
+    name: Security check
+    needs: tf_base
+    runs-on: [Linux]
+    steps:
+      - name: IaC security (KICS)
+        uses: checkmarx/kics-github-action@v1.6.3
+        with:
+          path: ${{ github.workspace }}
+          ignore_on_exit: none
+          disable_secrets: true
+          fail_on: 'high,medium,low'
+          enable_comments: true
+          cloud_provider: 'aws, azure, gcp'
+          token: ${{ secrets.GITHUB_TOKEN }}
