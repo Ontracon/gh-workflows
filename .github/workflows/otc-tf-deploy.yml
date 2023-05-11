@@ -57,6 +57,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
           CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
+        env:
+          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
   TF_deploy:
     needs: prepare
@@ -107,10 +111,7 @@ jobs:
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
-        env:
-          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+
 
       - name: Terraform plan
         uses: otc-code/gh-actions/terraform@main
@@ -129,3 +130,7 @@ jobs:
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'apply'
+        env:
+          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
