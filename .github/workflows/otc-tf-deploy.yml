@@ -35,7 +35,7 @@ jobs:
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
-        uses: azure/login@v1
+        uses: azure/login@vv1.4.6
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -86,7 +86,7 @@ jobs:
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
-        uses: azure/login@v1
+        uses: azure/login@v1.4.6
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -107,6 +107,10 @@ jobs:
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+        env:
+          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
       - name: Terraform plan
         uses: otc-code/gh-actions/terraform@main
