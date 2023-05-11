@@ -63,6 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
           CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
+          GCP_PROJECT_ID: 'otc-ontracon'
 
   TF_deploy:
     needs: prepare
@@ -119,6 +120,7 @@ jobs:
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+          GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform plan
         uses: otc-code/gh-actions/terraform@main
@@ -127,6 +129,7 @@ jobs:
           TERRAFORM_ACTION: 'plan'
           TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/project.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
+          GCP_PROJECT_ID: 'otc-ontracon'
 
 
       - name: Terraform apply
@@ -134,3 +137,4 @@ jobs:
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'apply'
+          GCP_PROJECT_ID: 'otc-ontracon'
