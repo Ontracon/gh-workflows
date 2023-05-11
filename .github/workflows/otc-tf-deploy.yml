@@ -35,7 +35,7 @@ jobs:
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
-        uses: azure/login@v1.4.6
+        uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
-        uses: azure/login@v1.4.6
+        uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
