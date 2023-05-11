@@ -58,9 +58,7 @@ jobs:
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
           CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
         env:
-          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+          ARM_USE_OIDC: true
 
   TF_deploy:
     needs: prepare
@@ -111,6 +109,8 @@ jobs:
           TERRAFORM_ACTION: 'init'
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+        env:
+          ARM_USE_OIDC: true
 
 
       - name: Terraform plan
@@ -121,16 +121,11 @@ jobs:
           TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/project.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
         env:
-          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-
+          ARM_USE_OIDC: true
       - name: Terraform apply
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'apply'
         env:
-          ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-          ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+          ARM_USE_OIDC: true
