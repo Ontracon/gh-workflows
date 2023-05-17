@@ -34,7 +34,7 @@ jobs:
       #     TERRAFORM_ACTION: 'init'
       #     GITHUB_TOKEN: ${{ secrets.token }}
       #     TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
-      # 
+      #
       # - name: Terraform validate
       #   uses: otc-code/gh-actions/terraform@main
       #   with:
@@ -50,9 +50,9 @@ jobs:
         uses: checkmarx/kics-github-action@v1.6.3
         with:
           path: ${{ github.workspace }}
-          ignore_on_exit: results
+          #ignore_on_exit: results
           disable_secrets: true
-          #fail_on: 'high,medium,low'
+          fail_on: 'high,medium,low'
           enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
