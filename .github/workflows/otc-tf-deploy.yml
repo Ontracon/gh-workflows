@@ -97,7 +97,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
-          aws-region: ${{ fromJson(steps.get_project.outputs.otc_region) }}
+          aws-region: 'eu-central-1'
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
