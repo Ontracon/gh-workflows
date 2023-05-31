@@ -53,7 +53,7 @@ jobs:
           #ignore_on_exit: results
           disable_secrets: true
           fail_on: 'high,medium'
-          output_path: '${{ github.workspace }}/results.sarif'
+          #output_path: '${{ github.workspace }}/results.sarif'
           enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
