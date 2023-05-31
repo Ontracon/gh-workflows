@@ -54,6 +54,11 @@ jobs:
           #ignore_on_exit: results
           disable_secrets: true
           fail_on: 'high,medium'
+          output_path: '${{ github.workspace }}/results.sarif'
           enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: '${{ github.workspace }}/results.sarif'
