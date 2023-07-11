@@ -41,7 +41,7 @@ jobs:
       #     aws-region: 'eu-central-1'
 
       - name: 'Configure Azure Credentials'
-        if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
+        #if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
