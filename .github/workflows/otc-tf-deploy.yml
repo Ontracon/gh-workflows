@@ -38,7 +38,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-session-name: 'otc-action'
-          role-to-assume: 'arn:aws:iam::710036656280:role/otc-int-euc1-testapp-otc-demo-testapp-v0-oidc-iam-role' #'${{ secrets.AWS_ASSUME_ROLE_ARN}}'
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: 'eu-central-1'
 
       - name: 'Configure Azure Credentials'
