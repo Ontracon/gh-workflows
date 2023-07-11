@@ -33,15 +33,15 @@ jobs:
          echo "otc_backend=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
          echo "File: $FILE"
 
-      # - name: Configure AWS Credentials
-      #   if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='aws' }}
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
-      #     aws-region: 'eu-central-1'
+      - name: Configure AWS Credentials
+        if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='aws' }}
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
+          aws-region: 'eu-central-1'
 
       - name: 'Configure Azure Credentials'
-        #if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
+        if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
