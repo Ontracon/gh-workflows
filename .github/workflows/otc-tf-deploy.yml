@@ -28,7 +28,7 @@ jobs:
       - name: Get Backends
         id: get_backend
         run: |
-         FILE="${{ github.workspace }}/.otc/project.tfvars.json"
+         FILE="${{ github.workspace }}/.otc/otc.json"
          echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
          echo "otc_backend=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
          echo "File: $FILE"
@@ -86,11 +86,12 @@ jobs:
       - name: Get Project
         id: get_project
         run: |
-         FILE="${{ github.workspace }}/.otc/project.tfvars.json"
+         FILE="${{ github.workspace }}/.otc/otc.json"
          echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+         echo "env_state=`jq -c '.project.environments.${{ inputs.environment }}.state' $FILE`" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials
         if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
@@ -131,10 +132,12 @@ jobs:
           TERRAFORM_ACTION: 'plan'
           TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/project.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
+          AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
 
 
       - name: Terraform apply
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=="apply" }}
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
