@@ -141,7 +141,7 @@ jobs:
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
-          TERRAFORM_ACTION: 'plan'
+          TERRAFORM_ACTION: 'plan_destroy'
           TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/terraform.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
