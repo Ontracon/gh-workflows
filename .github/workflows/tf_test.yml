@@ -27,19 +27,19 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'fmt_check'
 
-      # - name: Terraform init
-      #   uses: otc-code/gh-actions/terraform@main
-      #   with:
-      #     TF_DIR: '${{ github.workspace }}'
-      #     TERRAFORM_ACTION: 'init'
-      #     GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
-      #     TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
-      #
-      # - name: Terraform validate
-      #   uses: otc-code/gh-actions/terraform@main
-      #   with:
-      #     TF_DIR: '${{ github.workspace }}'
-      #     TERRAFORM_ACTION: 'validate'
+      - name: Terraform init
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'init_without_backend'
+          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
+
+      - name: Terraform validate
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: '${{ github.workspace }}'
+          TERRAFORM_ACTION: 'validate'
+          
 
   tf_security:
     name: Security check
