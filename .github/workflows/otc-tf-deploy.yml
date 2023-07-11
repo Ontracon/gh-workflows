@@ -137,7 +137,7 @@ jobs:
 
 
       - name: Terraform apply
-        if: ${{ fromJson(steps.get_project.outputs.env_state)="apply" }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
