@@ -33,12 +33,12 @@ jobs:
          echo "otc_backend=`jq -c '.otc.otc_backend' $FILE`" >> "$GITHUB_OUTPUT"
          echo "File: $FILE"
 
-      - name: Configure AWS Credentials
-        if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='aws' }}
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
-          aws-region: 'eu-central-1'
+      # - name: Configure AWS Credentials
+      #   if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='aws' }}
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
+      #     aws-region: 'eu-central-1'
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='azr' }}
@@ -56,90 +56,90 @@ jobs:
             workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
             service_account: ${{ secrets.GCP_SA_EMAIL}}
 
-      - name: Deploy Backend
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TERRAFORM_ACTION: 'create_backend'
-          TF_DIR: ${{ github.workspace }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
-          CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
-          GCP_PROJECT_ID: 'otc-ontracon'
-
-  TF_deploy:
-    needs: prepare
-    name: Deploy (${{ inputs.environment }})
-    environment: ${{ inputs.environment }}
-    runs-on: [otc-static]
-    env:
-      ARM_USE_OIDC: true
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      GCP_PROJECT_ID: 'otc-ontracon'
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get Project
-        id: get_project
-        run: |
-         FILE="${{ github.workspace }}/.otc/otc.json"
-         echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "env_state=`jq -c '.project.environments.${{ inputs.environment }}.state' $FILE`" >> "$GITHUB_OUTPUT"
-
-      - name: Configure AWS Credentials
-        if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
-          aws-region: 'eu-central-1'
-
-      - name: 'Configure Azure Credentials'
-        if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: 'Configure GCP Credentials'
-        if: ${{ fromJson(steps.get_project.outputs.gcp_cloud_enabled)==true }}
-        uses: 'google-github-actions/auth@v1.0.0'
-        with:
-            create_credentials_file: 'true'
-            workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
-            service_account: ${{ secrets.GCP_SA_EMAIL}}
-
-      - name: Terraform init
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TF_DIR: '${{ github.workspace }}'
-          TERRAFORM_ACTION: 'init'
-          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
-          TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
-          GCP_PROJECT_ID: 'otc-ontracon'
-
-      - name: Terraform plan
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TF_DIR: ${{ github.workspace }}
-          TERRAFORM_ACTION: 'plan'
-          TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/project.tfvars'
-          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
-          AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
-          GCP_PROJECT_ID: 'otc-ontracon'
-
-
-      - name: Terraform apply
-        if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
-        uses: otc-code/gh-actions/terraform@main
-        with:
-          TF_DIR: ${{ github.workspace }}
-          TERRAFORM_ACTION: 'apply'
-          GCP_PROJECT_ID: 'otc-ontracon'
+      # - name: Deploy Backend
+      #   uses: otc-code/gh-actions/terraform@main
+      #   with:
+      #     TERRAFORM_ACTION: 'create_backend'
+      #     TF_DIR: ${{ github.workspace }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+      #     CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
+      #     GCP_PROJECT_ID: 'otc-ontracon'
+  #
+  # TF_deploy:
+  #   needs: prepare
+  #   name: Deploy (${{ inputs.environment }})
+  #   environment: ${{ inputs.environment }}
+  #   runs-on: [otc-static]
+  #   env:
+  #     ARM_USE_OIDC: true
+  #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     GCP_PROJECT_ID: 'otc-ontracon'
+  #
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #     - name: Get Project
+  #       id: get_project
+  #       run: |
+  #        FILE="${{ github.workspace }}/.otc/otc.json"
+  #        echo "otc_region=`jq -c '.otc.otc_region' $FILE`" >> "$GITHUB_OUTPUT"
+  #        echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+  #        echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+  #        echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+  #        echo "env_state=`jq -c '.project.environments.${{ inputs.environment }}.state' $FILE`" >> "$GITHUB_OUTPUT"
+  #
+  #     - name: Configure AWS Credentials
+  #       if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
+  #         aws-region: 'eu-central-1'
+  #
+  #     - name: 'Configure Azure Credentials'
+  #       if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
+  #       uses: azure/login@v1
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #
+  #     - name: 'Configure GCP Credentials'
+  #       if: ${{ fromJson(steps.get_project.outputs.gcp_cloud_enabled)==true }}
+  #       uses: 'google-github-actions/auth@v1.0.0'
+  #       with:
+  #           create_credentials_file: 'true'
+  #           workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
+  #           service_account: ${{ secrets.GCP_SA_EMAIL}}
+  #
+  #     - name: Terraform init
+  #       uses: otc-code/gh-actions/terraform@main
+  #       with:
+  #         TF_DIR: '${{ github.workspace }}'
+  #         TERRAFORM_ACTION: 'init'
+  #         GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
+  #         TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/${{ inputs.environment }}.tfbackend'
+  #         GCP_PROJECT_ID: 'otc-ontracon'
+  #
+  #     - name: Terraform plan
+  #       uses: otc-code/gh-actions/terraform@main
+  #       with:
+  #         TF_DIR: ${{ github.workspace }}
+  #         TERRAFORM_ACTION: 'plan'
+  #         TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/project.tfvars'
+  #         OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
+  #         AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
+  #         GCP_PROJECT_ID: 'otc-ontracon'
+  #
+  #
+  #     - name: Terraform apply
+  #       if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
+  #       uses: otc-code/gh-actions/terraform@main
+  #       with:
+  #         TF_DIR: ${{ github.workspace }}
+  #         TERRAFORM_ACTION: 'apply'
+  #         GCP_PROJECT_ID: 'otc-ontracon'
