@@ -136,6 +136,24 @@ jobs:
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
 
+      - name: Terraform plan_destroy
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ github.workspace }}
+          TERRAFORM_ACTION: 'plan'
+          TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/terraform.tfvars'
+          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
+          AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
+          GCP_PROJECT_ID: 'otc-ontracon'
+
+      - name: Terraform destroy
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ github.workspace }}
+          TERRAFORM_ACTION: 'apply'
+          GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform apply
         if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
