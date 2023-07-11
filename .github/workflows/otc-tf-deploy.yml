@@ -132,7 +132,7 @@ jobs:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'plan'
           TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/terraform.tfvars'
-          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/project.tfvars.json'
+          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/${{ inputs.environment }}/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
 
