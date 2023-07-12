@@ -37,7 +37,7 @@ jobs:
         if: ${{ fromJson(steps.get_backend.outputs.otc_backend)=='aws' }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
-                    role-session-name: 'otc-deploy-${{ inputs.environment }}'
+          role-session-name: 'otc-deploy-${{ inputs.environment }}'
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: 'eu-central-1'
 
