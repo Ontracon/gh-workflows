@@ -61,6 +61,7 @@ jobs:
           TERRAFORM_ACTION: 'fmt_check'
 
       - name: Terraform init
+        id: init
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: '${{ github.workspace }}'
@@ -70,12 +71,14 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform validate
+        id: validate
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'validate'
 
       - name: Terraform plan
+        id: plan
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
@@ -84,11 +87,16 @@ jobs:
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
+
       - name: Comment PR
+        if: always()
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            **Production change summary**:
+            # Production change summary:
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
             ${{ env.PLAN_SUMMARY }}
 
