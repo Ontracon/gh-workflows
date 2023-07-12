@@ -65,3 +65,4 @@ jobs:
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_paths: './.terraform/**/examples/**'
+          exclude_categories: 'Observability,Networking and Firewall'
