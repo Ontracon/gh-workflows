@@ -46,6 +46,9 @@ jobs:
     needs: tf_base
     runs-on: [Linux]
     steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}      
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
