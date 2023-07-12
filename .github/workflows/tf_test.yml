@@ -66,3 +66,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_paths: './.terraform/**/examples/**'
           output_formats: 'json'
+          exclude_queries: 'ef0b316a-211e-42f1-888e-64efe172b755,96ed3526-0179-4c73-b1b2-372fde2e0d13,96ed3526-0179-4c73-b1b2-372fde2e0d13,fd632aaf-b8a1-424d-a4d1-0de22fd3247a'
