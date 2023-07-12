@@ -84,6 +84,12 @@ jobs:
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Hello world ! :wave:
+            Test
 
   tf_security:
     name: Security check
