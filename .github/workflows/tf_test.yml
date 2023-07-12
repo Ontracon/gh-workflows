@@ -52,7 +52,7 @@ jobs:
           TF_DIR: '${{ github.workspace }}'
           TERRAFORM_ACTION: 'init_without_backend'
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
-                
+
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
