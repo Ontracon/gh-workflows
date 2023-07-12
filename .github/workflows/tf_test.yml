@@ -92,7 +92,7 @@ jobs:
 
       - name: Terraform plan destroy
         if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
-        id: plan
+        id: plan_destroy
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
@@ -111,6 +111,7 @@ jobs:
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Destroy \`${{ steps.plan_destroy.outcome }}\`
 
             ${{ env.PLAN_SUMMARY }}
 
