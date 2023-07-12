@@ -84,7 +84,7 @@ jobs:
           TF_VARS_FILE: '${{ github.workspace }}/env/prd/terraform.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
-          GCP_PROJECT_ID: 'otc-ontracon'            
+          GCP_PROJECT_ID: 'otc-ontracon'
 
   tf_security:
     name: Security check
