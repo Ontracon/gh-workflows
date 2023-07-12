@@ -88,7 +88,8 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Deployment to production change summary:
+            **Production change summary**:
+
             ${{ env.PLAN_SUMMARY }}
 
   tf_security:
