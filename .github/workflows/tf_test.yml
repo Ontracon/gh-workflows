@@ -85,7 +85,7 @@ jobs:
           TERRAFORM_ACTION: 'validate'
 
       - name: Terraform plan
-        if: ${{ fromJson(steps.get_project.outputs.env_state)!='destroy' }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)!='todelete' }}
         id: plan
         uses: otc-code/gh-actions/terraform@main
         with:
@@ -97,7 +97,7 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform plan destroy
-        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='todelete' }}
         id: plan_destroy
         uses: otc-code/gh-actions/terraform@main
         with:
@@ -109,7 +109,7 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform apply
-        if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='active' }}
         id: apply
         run: echo "Will run terraform apply"
 

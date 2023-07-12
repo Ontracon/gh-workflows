@@ -128,6 +128,7 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform plan
+        if: ${{ fromJson(steps.get_project.outputs.env_state)!='todelete' }}
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
@@ -138,7 +139,7 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform plan_destroy
-        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='todelete' }}
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
@@ -149,7 +150,7 @@ jobs:
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform destroy
-        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='active' }}
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
