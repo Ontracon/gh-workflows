@@ -30,6 +30,7 @@ jobs:
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
+         echo "env_state=`jq -c '.project.environments.prd.state' $FILE`" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials
         if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
@@ -78,11 +79,24 @@ jobs:
           TERRAFORM_ACTION: 'validate'
 
       - name: Terraform plan
+        if: ${{ fromJson(steps.get_project.outputs.env_state)!='destroy' }}
         id: plan
         uses: otc-code/gh-actions/terraform@main
         with:
           TF_DIR: ${{ github.workspace }}
           TERRAFORM_ACTION: 'plan'
+          TF_VARS_FILE: '${{ github.workspace }}/env/prd/terraform.tfvars'
+          OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
+          AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
+          GCP_PROJECT_ID: 'otc-ontracon'
+
+      - name: Terraform plan destroy
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
+        id: plan
+        uses: otc-code/gh-actions/terraform@main
+        with:
+          TF_DIR: ${{ github.workspace }}
+          TERRAFORM_ACTION: 'plan_destroy'
           TF_VARS_FILE: '${{ github.workspace }}/env/prd/terraform.tfvars'
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
