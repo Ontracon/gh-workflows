@@ -14,8 +14,6 @@ jobs:
     name: Base check
     runs-on: [Linux]
     environment: prd
-    env:
-      ARM_USE_OIDC: true
     outputs:
       files: ${{ steps.files.outputs.files }}
       dirs: ${{ steps.files.outputs.dirs }}
@@ -73,6 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/prd.tfbackend'
           GCP_PROJECT_ID: 'otc-ontracon'
+          ARM_USE_OIDC: true
 
       - name: Terraform validate
         id: validate
@@ -92,6 +91,7 @@ jobs:
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
+          ARM_USE_OIDC: true
 
       - name: Terraform plan destroy
         if: ${{ fromJson(steps.get_project.outputs.env_state)=='destroy' }}
@@ -104,17 +104,26 @@ jobs:
           OTC_TF_VARS_FILE: '${{ github.workspace }}/.otc/otc.json'
           AUTO_TF_VARS_FILE: '${{ github.workspace }}/env/prd/auto.tfvars.json'
           GCP_PROJECT_ID: 'otc-ontracon'
+          ARM_USE_OIDC: true
+
+      - name: Terraform apply
+        if: ${{ fromJson(steps.get_project.outputs.env_state)=='apply' }}
+        id: apply
+        run: echo "Will run terraform apply"
 
       - name: Comment PR
         if: always()
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            # Production change summary:
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            #### Terraform Destroy \`${{ steps.plan_destroy.outcome }}\`
+            # Production change summary (State: ${{ steps.get_project.outputs.env_state }}):
+            #### Terraform Initialization ‣\`${{ steps.init.outcome }}\`
+            #### Terraform Validation ✓\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan ♺\`${{ steps.plan.outcome }}\`
+
+            After merging:
+            #### Terraform apply ➥\`${{ steps.apply.outcome }}\`
+            #### Terraform destroy ☠\`${{ steps.plan_destroy.outcome }}\`
 
             ${{ env.PLAN_SUMMARY }}
 
