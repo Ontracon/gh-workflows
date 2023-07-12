@@ -30,7 +30,6 @@ jobs:
          echo "aws_cloud_enabled=`jq -c '.project.aws_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "azr_cloud_enabled=`jq -c '.project.azr_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
          echo "gcp_cloud_enabled=`jq -c '.project.gcp_cloud_enabled' $FILE`" >> "$GITHUB_OUTPUT"
-         echo "env_state=`jq -c '.project.environments.${{ inputs.environment }}.state' $FILE`" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials
         if: ${{ fromJson(steps.get_project.outputs.aws_cloud_enabled)==true }}
