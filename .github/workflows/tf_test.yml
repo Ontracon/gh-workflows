@@ -40,6 +40,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN}}
           aws-region: 'eu-central-1'
+          role-session-name: 'Test-PRD'
 
       - name: 'Configure Azure Credentials'
         if: ${{ fromJson(steps.get_project.outputs.azr_cloud_enabled)==true }}
