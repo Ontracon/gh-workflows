@@ -14,6 +14,8 @@ jobs:
     name: Base check
     runs-on: [Linux]
     environment: prd
+    env:
+      ARM_USE_OIDC: true
     outputs:
       files: ${{ steps.files.outputs.files }}
       dirs: ${{ steps.files.outputs.dirs }}
