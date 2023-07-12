@@ -88,8 +88,8 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello world ! :wave:
-            Test
+            Deployment to production change summary:
+            ${{ env.PLAN_SUMMARY }}
 
   tf_security:
     name: Security check
