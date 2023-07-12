@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}      
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: IaC security (KICS)
         uses: checkmarx/kics-github-action@v1.6.3
         with:
@@ -58,6 +58,7 @@ jobs:
           fail_on: 'high,medium'
           #output_path: '${{ github.workspace }}/results.sarif'
           enable_comments: true
+          comments_with_queries: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_paths: './.terraform/**' # Don't test modules
