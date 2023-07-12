@@ -64,4 +64,4 @@ jobs:
           enable_comments: true
           cloud_provider: 'aws, azure, gcp'
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_paths: '.terraform/*/examples/**'
+          exclude_paths: '.terraform/*/examples/*/*.tf'
