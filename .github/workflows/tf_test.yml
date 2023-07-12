@@ -118,14 +118,15 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            # Production change summary (State: ${{ steps.get_project.outputs.env_state }}):
-            #### Terraform Initialization ‣\`${{ steps.init.outcome }}\`
-            #### Terraform Validation ✓\`${{ steps.validate.outcome }}\`
-            #### Terraform Plan ♺\`${{ steps.plan.outcome }}\`
+            ## Production change summary (State: ${{ steps.get_project.outputs.env_state }}):
+
+            ‣ Terraform Initialization: `${{ steps.init.outcome }}`
+            ✓ Terraform Validation:     `${{ steps.validate.outcome }}`
+            ♺ Terraform Plan:           `${{ steps.plan.outcome }}`
 
             After merging:
-            #### Terraform apply ➥\`${{ steps.apply.outcome }}\`
-            #### Terraform destroy ☠\`${{ steps.plan_destroy.outcome }}\`
+            ➥ Terraform apply:      `${{ steps.apply.outcome }}`
+            ☠ Terraform destroy:    `${{ steps.plan_destroy.outcome }}`
 
             ${{ env.PLAN_SUMMARY }}
 
