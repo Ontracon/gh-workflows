@@ -76,7 +76,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/prd.tfbackend'
           GCP_PROJECT_ID: 'otc-ontracon'
-          ARM_USE_OIDC: true
 
       - name: Terraform validate
         id: validate
