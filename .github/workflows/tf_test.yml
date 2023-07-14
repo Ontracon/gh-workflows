@@ -136,7 +136,7 @@ jobs:
             ✓ Terraform validation: `${{ steps.validate.outcome }}`
             ♺ Terraform plan: `${{ steps.plan.outcome }}`
 
-            After merging:
+            After release:
             ➥ Terraform apply: `${{ steps.apply.outcome }}`
             ☠ Terraform destroy: `${{ steps.plan_destroy.outcome }}`
 
