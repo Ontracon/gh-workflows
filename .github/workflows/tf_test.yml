@@ -60,7 +60,7 @@ jobs:
             create_credentials_file: 'true'
             workload_identity_provider: ${{ secrets.GCP_PROVIDER_NAME}}
             service_account: ${{ secrets.GCP_SA_EMAIL}}
-            
+
       - name: Deploy Backend
         uses: otc-code/gh-actions/terraform@main
         with:
@@ -68,7 +68,7 @@ jobs:
           TF_DIR: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_PARTIAL_BACKEND_FILE: '${{ github.workspace }}/.otc/prd.tfbackend'
-          CLOUD_REGION: ${{ fromJson(steps.get_backend.outputs.otc_region) }}
+          CLOUD_REGION: ${{ fromJson(steps.get_project.outputs.otc_region) }}
           GCP_PROJECT_ID: 'otc-ontracon'
 
       - name: Terraform fmt_check
